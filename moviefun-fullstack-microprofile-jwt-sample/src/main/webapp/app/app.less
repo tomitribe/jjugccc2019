@@ -1,0 +1,300 @@
+/*!
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+html {
+  height: 100%;
+}
+
+body {
+  @content-margin-top: 45px;
+  background-color: #f5f5f5;
+
+  &[current-view="ux-login"] {
+    &, .container, .ux-content-area, .ux-login {
+      height: 100%;
+    }
+    .back-drop {
+      content: '';
+      display: block;
+      z-index: -1;
+      position: fixed;
+      background: none center center no-repeat;
+      background-size: cover;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      &.login {
+        background-image: url(img/login.jpg);
+      }
+      &.shadow {
+        background-color: rgba(57, 53, 102, 0.9)
+      }
+    }
+
+    .navbar {
+      display: none;
+    }
+
+    .form-control {
+      border-color: rgba(76,69,136,0.9);
+      border-radius: .2rem;
+    }
+    .btn-lg.btn-primary {
+      font-size: 1em;
+      border-radius: .2rem;
+    }
+  }
+
+  .bg-dark {
+    background-color: #524e80 !important;
+  }
+
+  .navbar-brand.logo {
+    padding-left: 41px;
+    background: url(img/movie-icon.png) 5px center no-repeat;
+    background-size: 30px;
+  }
+  .logout-icon {
+    width: 20px;
+    height: 20px;
+    background: url(img/logout-icon.png) center center no-repeat;
+    background-size: cover;
+  }
+
+
+  .ux-movie-window {
+    .modal-dialog {
+      padding-top: 90px;
+      padding-bottom: 0;
+    }
+  }
+
+  .btn-primary {
+    background-color: #4ea1ff;
+    border-color: rgba(78, 161, 255, 0.7);
+  }
+
+  .ux-jug {
+    white-space: pre-wrap;
+    color: #ffffff;
+  }
+
+  .ux-login {
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    -ms-flex-align: center;
+    align-items: stretch;
+    color: #ffffff;
+    justify-content: center;
+    .text-muted {
+      color: #f5f5f5!important;
+    }
+    .form-login {
+      width: 100%;
+      max-width: 330px;
+      padding: 15px;
+      margin: auto;
+      .checkbox {
+        font-weight: 400;
+      }
+      .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        color: #ffffff;
+        background-color: rgba(76,69,136,1);
+        font-size: 16px;
+        margin: 15px 0;
+        &::placeholder{
+          color: #ffffff;
+        }
+      }
+      .form-control:focus {
+        z-index: 2;
+      }
+      img {
+        width: 220px;
+      }
+    }
+  }
+
+  .ux-movie-page {
+    margin-top: @content-margin-top;
+  }
+
+  .ux-landing {
+    margin-top: @content-margin-top;
+  }
+
+  .ux-setup {
+    margin-top: @content-margin-top;
+  }
+
+  .ux-main {
+    margin-top: @content-margin-top;
+
+    .pagination {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    th:last-child {
+      width: 5px;
+    }
+
+    a.ux-delete-row:hover, a.ux-edit-row:hover {
+      cursor: hand;
+    }
+
+    .panel-body>.input-group {
+      margin-bottom: 15px;
+    }
+
+    .search-movies-bar {
+      height: 50px;
+      @search-bar-color: #524e80;
+      border: 1px solid @search-bar-color;
+
+      span.input-group-text, input, #dropdownMenuButton {
+        color: #FFFFFF;
+        background-color: @search-bar-color;
+      }
+
+      span.input-group-text span.fa {
+        padding-left: 10px;
+      }
+
+      input::placeholder {
+        color: #FFFFFF;
+      }
+    }
+  }
+
+  .alert.fixed {
+    position: fixed;
+    bottom: 20px;
+    margin-left: -200px;
+    left: 50%;
+    width: 400px;
+    margin-bottom: 0;
+    box-shadow: 1px 1px 4px -1px #454545;
+    z-index: 1051;
+  }
+
+  .ux-logout-block {
+    .ux-avatar {
+      box-shadow: 0 0 0 2px #fff;
+    }
+  }
+}
+
+/* enable absolute positioning */
+.inner-addon {
+  position: relative;
+}
+
+/* style icon */
+.inner-addon .fa {
+  position: absolute;
+  padding: 16px 13px;
+  pointer-events: none;
+  z-index: 3;
+  font-size: 14px;
+  color: #fff;
+  top: 0;
+}
+
+/* align icon */
+.left-addon .fa  { left:  0;}
+.right-addon .fa { right: 0;}
+
+/* add padding  */
+.left-addon input  { padding-left:  35px!important; }
+.right-addon input { padding-right: 35px!important; }
+
+.text-muted { color: #9e9e9e!important; }
+.text-light-gray { color: #bac5cd!important; }
+
+.modal-content{
+  .close-x {
+    position: absolute;
+    right: -1em;
+    top: -1em;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    height: 1em;
+    width: 1em;
+    line-height: 0;
+    padding: 0 0 0.25em 0;
+    opacity: 1;
+  }
+
+  .modal-footer {
+    button.ux-close {
+      color: #B9B9B9;
+      font-size: 14px;
+    }
+    button.ux-save {
+      width: 7rem;
+    }
+  }
+}
+
+.thead-gray {
+  background-color: #e5e5e5;
+  color: #9e9e9e;
+}
+
+.tbody-gray {
+  color: #a7a7a7;
+  a {
+    color: #5f4a92;
+  }
+}
+
+.modal-backdrop {
+  background-color: #534E7D;
+  &.show {
+    opacity: 0.9;
+  }
+}
+
+.ux-hover-dots {
+  font-size: 1.5em;
+  &:hover, .btn-group.show > & {
+    color: #5496f3;
+  }
+}
+
+.ux-hover-dots, .dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  span{
+    color: #fff!important;
+  }
+}
+
+*:focus {
+  box-shadow: none !important;
+}
+

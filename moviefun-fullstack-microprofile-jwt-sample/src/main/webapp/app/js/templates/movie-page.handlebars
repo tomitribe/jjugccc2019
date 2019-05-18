@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="mx-auto mb-1 mt-4 d-flex px-5 py-3 align-items-end justify-content-between">
+            <h3 class="font-weight-normal pl-1 mb-2">{{title}} ({{year}})</h3>
+            <div class="btn-group mb-2 pr-1">
+                <span class="fa fa-ellipsis-h ux-hover-dots" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></span>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <button href="edit" class="ux-edit-movie dropdown-item" type="button"><span class="col-2 fa fa-edit p-0 text-info"></span><span class="col-10">Edit</span></button>
+                    <button href="delete" class="ux-delete-row dropdown-item" type="button" hidden><span class="col-2 fa fa-trash-alt p-0 text-danger"></span><span class="col-10">Delete</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="mx-auto">
+            <div class="card">
+                <div class="card-body px-0 py-0">
+                    <div class="container px-5 py-4">
+                        <div class="row my-3">
+                            <div class="col m-1">
+                                <div class="text-light-gray mb-3">TITLE</div>
+                                <h5 class="font-weight-normal">{{title}}</h5>
+                            </div>
+                            <div class="col m-1">
+                                <div class="text-light-gray mb-3">DIRECTOR</div>
+                                <h5 class="font-weight-normal">{{director}}</h5>
+                            </div>
+                            <div class="col m-1">
+                                <div class="text-light-gray mb-3">GENRE</div>
+                                <h5 class="font-weight-normal">{{genre}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col m-1">
+                                <div class="text-light-gray mb-3">RATING</div>
+                                <h5 class="font-weight-normal"><i class="fa fa-star text-warning"></i> {{rating}}/10</h5>
+                            </div>
+                            <div class="col m-1">
+                                <div class="text-light-gray mb-3">YEAR</div>
+                                <h5 class="font-weight-normal">{{year}}</h5>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="container px-5 py-4">
+                        <div class="row">
+                            <div class="col">
+                                <div class="ux-comments">
+                                    <h5>COMMENTS</h5>
+                                    {{#each comments}}
+                                        <div class="row comment-mock comment-{{this.id}}">
+                                            <div class="col">
+                                                <div class="mt-3 g-mb-30 media-comment d-flex">
+                                                    <img class="rounded-circle mr-3"
+                                                         src="{{gravatar this.email}}"
+                                                         height="50" width="50">
+                                                    <div class="media-body">
+                                                        <div class="d-flex">
+                                                            <h5 class="h5 mb-0">{{this.author}}</h5>
+                                                            <a title="{{java2jsString this.timestamp}}"><span
+                                                                    class="ml-2 text-muted text-lowercase font-italic">{{formatTime
+                                                                    this.timestamp}}</span></a>
+                                                        </div>
+                                                        <p class="text-muted">{{this.comment}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/each}}
+                                    <div class="row comment-mock comment-{{this.id}}">
+                                        <div class="col">
+                                            <div class="mt-3 g-mb-30 media-comment d-flex">
+                                                <a title="{{this.author}}">
+                                                    <img class="ux-avatar rounded-circle mr-3"
+                                                         src="{{gravatar this.email}}" height="50" width="50">
+                                                </a>
+                                                <div class="media-body">
+                                                    <form class="form-comment">
+                                                            <textarea class="form-control" placeholder="Message..."
+                                                                      name="comment"></textarea>
+                                                        <button class="btn float-right btn-primary my-3 ux-send-comment"
+                                                                type="submit">Comment
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

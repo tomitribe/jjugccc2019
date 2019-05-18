@@ -1,0 +1,17 @@
+# Stateless Microservice Security via JWT and MicroProfile
+
+Hello JJUG!  I hope you enjoyed the session, here are all the
+materials so you can have fun and try things at home.
+
+If you have any questions, file an issue and I will truly enjoy
+talking with you:
+
+ - https://github.com/tomitribe/jjugccc2019/issues
+
+I hope my session was good enough to get at least a few people willing
+to ask questions after the conference is over.  You would make me
+truly happy. :)
+
+
+
+
