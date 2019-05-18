@@ -44,6 +44,7 @@
     <module>tomee-microprofile-jwt-custom-claim-types</module>
     <module>tomee-microprofile-jwt-bean-validation</module>
     <module>tomee-microprofile-jwt-bean-validation-strongly-typed</module>
+    <module>tomee-microprofile-jwt-bean-validation-reuse</module>
     <module>moviefun-fullstack-microprofile-jwt-sample</module>
   </modules>
 
