@@ -45,6 +45,7 @@
     <module>tomee-microprofile-jwt-bean-validation</module>
     <module>tomee-microprofile-jwt-bean-validation-strongly-typed</module>
     <module>tomee-microprofile-jwt-bean-validation-reuse</module>
+    <module>tomee-microprofile-jwt-bean-validation-alternate-groups-claim</module>
     <module>moviefun-fullstack-microprofile-jwt-sample</module>
   </modules>
 
