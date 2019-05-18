@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.val;
+package org.superbiz.val.roles;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -29,12 +29,12 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Allowed("user")
-@javax.validation.Constraint(validatedBy = {User.Constraint.class})
+@Allowed("manager")
+@javax.validation.Constraint(validatedBy = {Manager.Constraint.class})
 @Documented
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface User {
+public @interface Manager {
 
     Class<?>[] groups() default {};
 
@@ -43,7 +43,7 @@ public @interface User {
     Class<? extends Payload>[] payload() default {};
 
 
-    class Constraint implements ConstraintValidator<User, JsonWebToken> {
+    class Constraint implements ConstraintValidator<Manager, JsonWebToken> {
         @Override
         public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
             return true;

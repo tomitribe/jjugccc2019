@@ -14,51 +14,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.val;
+package org.superbiz.val.claims;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+@RequireClaim("sub")
+@javax.validation.Constraint(validatedBy = {})
 @Documented
-@RequireClaim("iss")
-@javax.validation.Constraint(validatedBy = {Issuer.Constraint.class})
-@Target({METHOD, FIELD, ANNOTATION_TYPE, PARAMETER})
+@Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface Issuer {
-
-    String value();
+public @interface Sub {
 
     Class<?>[] groups() default {};
 
-    String message() default "The 'iss' claim must be '{value}'";
+    String message() default "";
 
     Class<? extends Payload>[] payload() default {};
 
-
-    class Constraint implements ConstraintValidator<Issuer, JsonWebToken> {
-        private Issuer issuer;
-
-        @Override
-        public void initialize(final Issuer constraint) {
-            this.issuer = constraint;
-        }
-
-        @Override
-        public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
-            final String issuer = value.getIssuer();
-            return this.issuer.value().equals(issuer);
-        }
-    }
 }

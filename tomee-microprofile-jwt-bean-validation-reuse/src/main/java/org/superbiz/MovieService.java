@@ -16,11 +16,10 @@
  */
 package org.superbiz;
 
-import org.superbiz.val.Jti;
-import org.superbiz.val.Manager;
-import org.superbiz.val.MoviesApp;
-import org.superbiz.val.MoviesIssuer;
-import org.superbiz.val.User;
+import org.superbiz.val.MoviesToken;
+import org.superbiz.val.claims.Jti;
+import org.superbiz.val.roles.Manager;
+import org.superbiz.val.roles.User;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
@@ -43,16 +42,13 @@ public class MovieService {
     private Map<Integer, Movie> store = new ConcurrentHashMap<>();
 
     @GET
-    @MoviesIssuer
-    @User
-    @Manager
-    @Jti
+    @MoviesToken
     public List<Movie> getAllMovies() {
         return new ArrayList<>(store.values());
     }
 
     @POST
-    @MoviesApp
+    @MoviesToken
     @Manager
     public void addMovie(Movie newMovie) {
         store.put(newMovie.getId(), newMovie);

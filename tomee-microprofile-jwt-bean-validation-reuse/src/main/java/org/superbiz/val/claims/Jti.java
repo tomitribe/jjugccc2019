@@ -14,49 +14,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.val;
+package org.superbiz.val.claims;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Set;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+@RequireClaim("jti")
+@javax.validation.Constraint(validatedBy = {})
 @Documented
-@javax.validation.Constraint(validatedBy = {Allowed.Constraint.class})
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface Allowed {
-
-    String value();
+public @interface Jti {
 
     Class<?>[] groups() default {};
 
-    String message() default "The 'group' claim must contain '{value}'";
+    String message() default "";
 
     Class<? extends Payload>[] payload() default {};
 
-
-    class Constraint implements ConstraintValidator<Allowed, JsonWebToken> {
-        private Allowed allowed;
-
-        @Override
-        public void initialize(final Allowed constraint) {
-            this.allowed = constraint;
-        }
-
-        @Override
-        public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
-            final Set<String> groups = value.getGroups();
-            return groups != null && groups.contains(this.allowed.value());
-        }
-    }
 }

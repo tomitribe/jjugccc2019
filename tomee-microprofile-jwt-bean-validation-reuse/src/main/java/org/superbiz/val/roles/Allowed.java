@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.val;
+package org.superbiz.val.roles;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -24,39 +24,39 @@ import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.Set;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@javax.validation.Constraint(validatedBy = {RequireClaim.Constraint.class})
-@Target({METHOD, FIELD, ANNOTATION_TYPE, PARAMETER})
+@javax.validation.Constraint(validatedBy = {Allowed.Constraint.class})
+@Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface RequireClaim {
+public @interface Allowed {
 
     String value();
 
     Class<?>[] groups() default {};
 
-    String message() default "The '{value}' claim is required";
+    String message() default "The 'group' claim must contain '{value}'";
 
     Class<? extends Payload>[] payload() default {};
 
-    class Constraint implements ConstraintValidator<RequireClaim, JsonWebToken> {
 
-        private RequireClaim claim;
+    class Constraint implements ConstraintValidator<Allowed, JsonWebToken> {
+        private Allowed allowed;
 
         @Override
-        public void initialize(final RequireClaim claim) {
-            this.claim = claim;
+        public void initialize(final Allowed constraint) {
+            this.allowed = constraint;
         }
 
         @Override
-        public boolean isValid(final JsonWebToken jsonWebToken, final ConstraintValidatorContext context) {
-            return jsonWebToken.claim(claim.value()).isPresent();
+        public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
+            final Set<String> groups = value.getGroups();
+            return groups != null && groups.contains(this.allowed.value());
         }
     }
 }

@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.val;
+package org.superbiz.val.roles;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -24,40 +24,30 @@ import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Set;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+@Allowed("user")
+@javax.validation.Constraint(validatedBy = {User.Constraint.class})
 @Documented
-@RequireClaim("aud")
-@javax.validation.Constraint(validatedBy = {Audience.Constraint.class})
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface Audience {
-
-    String value();
+public @interface User {
 
     Class<?>[] groups() default {};
 
-    String message() default "The 'aud' claim must contain '{value}'";
+    String message() default "The 'group' claim must contain 'user'";
 
     Class<? extends Payload>[] payload() default {};
 
 
-    class Constraint implements ConstraintValidator<Audience, JsonWebToken> {
-        private Audience audience;
-
-        @Override
-        public void initialize(final Audience constraint) {
-            this.audience = constraint;
-        }
-
+    class Constraint implements ConstraintValidator<User, JsonWebToken> {
         @Override
         public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
-            final Set<String> audience = value.getAudience();
-            return audience != null && audience.contains(this.audience.value());
+            return true;
         }
     }
+
 }
