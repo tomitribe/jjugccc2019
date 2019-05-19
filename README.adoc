@@ -13,5 +13,187 @@ to ask questions after the conference is over.  You would make me
 truly happy. :)
 
 
+# JJUG Feature
+
+The JJUG Feature allows you to create custom annotations to validate the JsonWebToken and return an HTTP 403 Forbidden.
+
+For example:
+
+[source,java]
+----
+package org.superbiz;
+
+import org.superbiz.val.役割;
+
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Path("/movies")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+@RequestScoped
+public class MovieService {
+
+    private Map<Integer, Movie> store = new ConcurrentHashMap<>();
+
+    @GET
+    @役割("ユーザー")
+    public List<Movie> getAllMovies() {
+        return new ArrayList<>(store.values());
+    }
+
+    @POST
+    @役割("部長")
+    public void addMovie(Movie newMovie) {
+        store.put(newMovie.getId(), newMovie);
+    }
+}
+----
+
+A JSON Web Token (JWT) that looks like this would be allowed to call the `addMovie` method:
+
+[source,java]
+----
+@Test
+public void testAsManager() throws Exception {
+    final WebClient webClient = createWebClient(base);
+
+    final Movie movie = new Movie(1, "The Matrix", "Lana Wachowski");
+
+    final String claims = "{" +
+            "  \"sub\":\"Jane Awesome\"," +
+            "  \"iss\":\"https://server.example.com\"," +
+            "  \"jti\":\"123456789\"," +
+            "  \"役割\":[\"部長\",\"ユーザー\"]," +
+            "  \"exp\":2552047942" +
+            "}";
+
+    final Response response = webClient.reset()
+            .path("/api/movies")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer " + Tokens.asToken(claims))
+            .post(movie);
+    assertEquals(204, response.getStatus());
+}
+----
+
+A JSON Web Token (JWT) that looks like this would NOT be allowed to call the `addMovie` method and will get an HTTP 403 Forbidden:
+
+[source,java]
+----
+@Test
+public void testNotManager() throws Exception {
+    final WebClient webClient = createWebClient(base);
+
+    final Movie movie = new Movie(1, "The Matrix", "Lana Wachowski");
+
+    final String claims = "{" +
+            "  \"sub\":\"Jane Awesome\"," +
+            "  \"iss\":\"https://server.example.com\"," +
+            "  \"役割\":[\"ユーザー\"]," +
+            "  \"exp\":2552047942" +
+            "}";
+
+    final Response response = webClient.reset()
+            .path("/api/movies")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer " + Tokens.asToken(claims))
+            .post(movie);
+    assertEquals(403, response.getStatus());
+}
+----
+
+The magic that makes this happen is a very simple Bean Validation you create:
+
+[source,java]
+----
+package org.superbiz.val;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import javax.json.JsonArray;
+import javax.json.JsonString;
+import javax.json.JsonValue;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@RequireClaim("役割")
+@IsArray("役割")
+@Documented
+@javax.validation.Constraint(validatedBy = {役割.Constraint.class})
+@Target({METHOD, ANNOTATION_TYPE})
+@Retention(RUNTIME)
+public @interface 役割 {
+
+    String value();
+
+    Class<?>[] groups() default {};
+
+    String message() default "The '役割' claim must contain '{value}'";
+
+    Class<? extends Payload>[] payload() default {};
 
 
+    class Constraint implements ConstraintValidator<役割, JsonWebToken> {
+        private 役割 役割;
+
+        @Override
+        public void initialize(final 役割 constraint) {
+            this.役割 = constraint;
+        }
+
+        @Override
+        public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
+            final JsonArray claim = value.getClaim("役割");
+            List<String> list = toStrings(claim);
+            return list.contains(役割.value());
+        }
+
+        private List<String> toStrings(final JsonArray jsonArray) {
+            final List<String> list = new ArrayList<String>();
+            for (final JsonValue jsonValue : jsonArray) {
+                final JsonString jsonString = (JsonString) jsonValue;
+                list.add(jsonString.getString());
+            }
+            return list;
+        }
+    }
+}
+----
+
+Ultimately, the only work is implementing this method of the BeanValidation `ConstraintValidator` interface:
+
+[source,java]
+----
+public class YourCustomValidator implements ConstraintValidator<YourCustomAnnotation, JsonWebToken> {
+
+    @Override
+    public boolean isValid(final JsonWebToken value, final ConstraintValidatorContext context) {
+        // your code here
+    }
+}
+----
+
+## JJUG Feature History
+
+Created for you, JJUG!  The very first code was written in the airplane to Tokyo May 10th. Work was done every day leading up to the unveiling at JJUG CCC 2019 Spring on Saturday May 18th.
+
+ - https://github.com/apache/tomee/commit/16f072e022d1e9c250c44e3cd4c6f74cc9dfcfc0
+
+The JJUG is one of only three conferences I will speak at this year.  Coming to JJUG was very special to me.  I wanted to give you a present made in your honor.  You are the firs to have it and the first to see it.  It is forever the "JJUG" feature :)
+
+私はあなたの名誉JJUGでこれを作成しました。 お楽しみください。
