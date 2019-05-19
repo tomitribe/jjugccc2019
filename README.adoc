@@ -193,7 +193,8 @@ public class YourCustomValidator implements ConstraintValidator<YourCustomAnnota
 Created for you, JJUG!  The very first code was written in the airplane to Tokyo May 10th. Work was done every day leading up to the unveiling at JJUG CCC 2019 Spring on Saturday May 18th.
 
  - https://github.com/apache/tomee/commit/16f072e022d1e9c250c44e3cd4c6f74cc9dfcfc0
-
+ - https://www.slideshare.net/dblevins1/2019-jjug-ccc-stateless-microservice-security-with-microprofile-jwt
+ 
 The JJUG is one of only three conferences I will speak at this year.  Coming to JJUG was very special to me.  I wanted to give you a present made in your honor.  You are the firs to have it and the first to see it.  It is forever the "JJUG" feature :)
 
 私はあなたの名誉JJUGでこれを作成しました。 お楽しみください。
